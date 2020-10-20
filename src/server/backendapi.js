@@ -39,22 +39,32 @@ exports.__esModule = true;
 var axios = require('axios');
 var CryptoJS = require('crypto-js');
 // Store API keys in your environment configuration.
-var YOUR_WYRE_API_KEY = 'AK-N8AW877C-4D2A3ZPH-4FPG6HW9-7ZTQ3G82';
-var YOUR_WYRE_SECRET_KEY = '';
+var WYRE_APIKEY = 'AK-9W8LQ7YH-GZGPLRN6-TXURQX6P-E9BD7B7Y';
+var WYRE_TOKEN = createWireToken();
+var secretKey = JSON.stringify({ "secretKey": createWireToken() });
+var accountId = 'AC_CEGT949D3Z6';
 var productionUrl = "https://api.sendwyre.com/v3";
 var testUrl = "https://api.testwyre.com/v3";
 // Signature Calculation using Crypto-js
-var signature = function (url, data) {
-    var dataToSign = url + data;
-    var token = CryptoJS.enc.Hex.stringify(CryptoJS.HmacSHA256(dataToSign.toString(CryptoJS.enc.Utf8), YOUR_WYRE_SECRET_KEY));
-    return token;
-};
+function calcAuthSigHash(url_body) {
+    var hash = CryptoJS.HmacSHA256(url_body, WYRE_TOKEN);
+    return CryptoJS.enc.Hex.stringify(hash);
+}
+function createWireToken() {
+    var date = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (date + Math.random() * 16) % 16 | 0;
+        date = Math.floor(date / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+}
 var BackendApi = /** @class */ (function () {
     function BackendApi() {
     }
     BackendApi.prototype.rateQuote = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var timestamp, url, headers, body, details, config, response, error_1;
+            var timestamp, url, headers, body, details, request, response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -73,16 +83,16 @@ var BackendApi = /** @class */ (function () {
                         };
                         details = JSON.stringify(body);
                         headers['Content-Type'] = 'application/json';
-                        headers['X-Api-Key'] = YOUR_WYRE_API_KEY;
-                        headers['X-Api-Signature'] = signature(url, details);
-                        config = {
+                        headers['X-Api-Key'] = WYRE_APIKEY;
+                        headers['X-Api-Signature'] = calcAuthSigHash(url + details);
+                        request = {
                             method: "POST",
                             url: url,
                             headers: headers,
                             data: details
                         };
-                        console.log("**************NODE JS FINAL REQUEST***************", config);
-                        return [4 /*yield*/, axios(config)];
+                        console.log("**************NODE JS FINAL REQUEST***************", request);
+                        return [4 /*yield*/, axios(request)];
                     case 1:
                         response = _a.sent();
                         res.send(response.data);
@@ -98,35 +108,39 @@ var BackendApi = /** @class */ (function () {
     };
     BackendApi.prototype.reserve = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var timestamp, url, headers, body, details, config, response, error_2;
+            var timestamp, url, body, details, headers, config, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         timestamp = new Date().getTime();
-                        url = testUrl + "/orders/reserve";
-                        headers = {};
+                        url = testUrl + "/orders/reserve?timestamp=" + timestamp;
                         body = {
-                            referrerAccountId: "AC_28ZMELGWTUR"
+                            referrerAccountId: accountId
                         };
                         details = JSON.stringify(body);
-                        //headers['Authorization'] = 'Bearer'+ ' '+ YOUR_WYRE_API_KEY;
-                        //headers['cache-control'] = 'no-cache';
+                        headers = {};
+                        headers['Authorization'] = 'Bearer ' + 'ce3d23c0-c301-4fc0-b1dc-a51211df3a4c';
+                        headers['cache-control'] = 'no-cache';
                         headers['Content-Type'] = 'application/json';
-                        headers['X-Api-Key'] = YOUR_WYRE_API_KEY;
-                        headers['X-Api-Signature'] = signature(url, details);
+                        headers['X-Api-Key'] = 'AK-2MEBNEQ2-9ECH8EB6-UMTGH7TX-89GLB4EP';
+                        headers['X-Api-Signature'] = calcAuthSigHash(url + details);
+                        headers['timestamp'] = timestamp;
                         config = {
-                            method: "POST",
+                            method: 'POST',
                             url: url,
                             headers: headers,
                             data: details
                         };
-                        console.log("**************NODE JS FINAL REQUEST***************", config);
-                        return [4 /*yield*/, axios(config)];
+                        return [4 /*yield*/, axios(config).then(function (response) {
+                                console.log(response);
+                                res.send(response.data);
+                            }, function (error) {
+                                console.log(error);
+                            })];
                     case 1:
-                        response = _a.sent();
-                        console.log("**************AXIOS***************", response);
-                        res.send(response.data);
+                        _a.sent();
+                        ;
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -140,12 +154,3 @@ var BackendApi = /** @class */ (function () {
     return BackendApi;
 }());
 exports.BackendApi = BackendApi;
-function createWireToken() {
-    var date = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (date + Math.random() * 16) % 16 | 0;
-        date = Math.floor(date / 16);
-        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return uuid;
-}
