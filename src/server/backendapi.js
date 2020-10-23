@@ -42,14 +42,17 @@ var CryptoJS = require('crypto-js');
 var WYRE_APIKEY = 'AK-9W8LQ7YH-GZGPLRN6-TXURQX6P-E9BD7B7Y';
 var WYRE_TOKEN = createWireToken();
 var secretKey = JSON.stringify({ "secretKey": createWireToken() });
-var accountId = 'AC_CEGT949D3Z6';
 var productionUrl = "https://api.sendwyre.com/v3";
 var testUrl = "https://api.testwyre.com/v3";
 // Signature Calculation using Crypto-js
-function calcAuthSigHash(url_body) {
+// function calcAuthSigHash(url_body) {
+//     let hash = CryptoJS.HmacSHA256(url_body, WYRE_TOKEN);
+//     return CryptoJS.enc.Hex.stringify(hash);
+// }
+var signature = function (url_body) {
     var hash = CryptoJS.HmacSHA256(url_body, WYRE_TOKEN);
     return CryptoJS.enc.Hex.stringify(hash);
-}
+};
 function createWireToken() {
     var date = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -62,89 +65,39 @@ function createWireToken() {
 var BackendApi = /** @class */ (function () {
     function BackendApi() {
     }
-    BackendApi.prototype.rateQuote = function (req, res, next) {
+    BackendApi.prototype.ordersReserveID = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var timestamp, url, headers, body, details, request, response, error_1;
+            var timestamp, url, headers, body, details, config, response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         timestamp = new Date().getTime();
-                        url = "https://api.testwyre.com/v3/orders/quote/partner?timestamp=" + timestamp;
+                        url = "https://api.testwyre.com/v3/orders/reserve?timestamp=" + timestamp;
                         headers = {};
                         body = {
-                            amount: "100.75",
-                            sourceCurrency: "USD",
-                            destCurrency: "BTC",
-                            dest: "bitcoin:1xxxxxxxxxxxxxxx",
-                            country: "US",
-                            accountId: "AC_28ZMELGWTUR",
-                            walletType: "DEBIT_CARD"
+                            referrerAccountId: req.body.referrerAccountId,
+                            amount: req.body.amount,
+                            sourceCurrency: req.body.sourceCurrency
                         };
                         details = JSON.stringify(body);
                         headers['Content-Type'] = 'application/json';
-                        headers['X-Api-Key'] = WYRE_APIKEY;
-                        headers['X-Api-Signature'] = calcAuthSigHash(url + details);
-                        request = {
+                        headers['Authorization'] = 'Bearer ' + 'SK-VM7DLZA2-U9TR7XD9-BA4U3C44-AFDHP2LJ'; //SK
+                        config = {
                             method: "POST",
                             url: url,
                             headers: headers,
                             data: details
                         };
-                        console.log("**************NODE JS FINAL REQUEST***************", request);
-                        return [4 /*yield*/, axios(request)];
+                        console.log("CONFIG", config);
+                        return [4 /*yield*/, axios(config)];
                     case 1:
                         response = _a.sent();
-                        res.send(response.data);
+                        res.send(JSON.stringify(response.data));
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
                         next(error_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    BackendApi.prototype.reserve = function (req, res, next) {
-        return __awaiter(this, void 0, void 0, function () {
-            var timestamp, url, body, details, headers, config, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        timestamp = new Date().getTime();
-                        url = testUrl + "/orders/reserve?timestamp=" + timestamp;
-                        body = {
-                            referrerAccountId: accountId
-                        };
-                        details = JSON.stringify(body);
-                        headers = {};
-                        headers['Authorization'] = 'Bearer ' + 'ce3d23c0-c301-4fc0-b1dc-a51211df3a4c';
-                        headers['cache-control'] = 'no-cache';
-                        headers['Content-Type'] = 'application/json';
-                        headers['X-Api-Key'] = 'AK-2MEBNEQ2-9ECH8EB6-UMTGH7TX-89GLB4EP';
-                        headers['X-Api-Signature'] = calcAuthSigHash(url + details);
-                        headers['timestamp'] = timestamp;
-                        config = {
-                            method: 'POST',
-                            url: url,
-                            headers: headers,
-                            data: details
-                        };
-                        return [4 /*yield*/, axios(config).then(function (response) {
-                                console.log(response);
-                                res.send(response.data);
-                            }, function (error) {
-                                console.log(error);
-                            })];
-                    case 1:
-                        _a.sent();
-                        ;
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_2 = _a.sent();
-                        next(error_2);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

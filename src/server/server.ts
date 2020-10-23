@@ -31,8 +31,8 @@ class Server {
 
         // test API 
         //router.get('/api/test', api.test.bind(api.test));
-        router.post('/api/reserve', api.reserve.bind(api.reserve));
-        router.post('/api/rateQuote', api.rateQuote.bind(api.rateQuote));
+        router.post('/api/reserve', api.ordersReserveID.bind(api.ordersReserveID));
+        //router.post('/api/rateQuote', api.rateQuote.bind(api.rateQuote));
         // use router middleware 
         this.app.use(router);
 

@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   name = "Durch.net";
   users: any[] = [];
   userCount = 0;
-
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private appService: AppService, private httpClient: HttpClient) {
@@ -30,10 +29,17 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     console.log("Calling Wyre Reserve API on 3000  ")
-    this.httpClient.post('http://localhost:3000/api/reserve','',{})
-            .subscribe(data => console.log("Data response",data)); 
-            // console.log("Calling Wyre RateQuote API on 3000  ")
-            // this.httpClient.post('http://localhost:3000/api/rateQuote','',{})
-            //         .subscribe(data => console.log("Data response",data)); 
+    const accountId = 'AC_28ZMELGWTUR'
+    return this.httpClient.post('http://localhost:3000/api/reserve', {
+      referrerAccountId: accountId,
+      amount: '10',
+      sourceCurrency: "EUR",
+    }).subscribe((data): any => {
+      if (!!data) {
+        console.log("Data final response", data)
+        var myWindow = window.open(data.url, "_self");
+      }
+    });
+
   }
 }
