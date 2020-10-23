@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       referrerAccountId: accountId,
       amount: '10',
       sourceCurrency: "EUR",
-    }).subscribe((data): any => {
+    }).subscribe(data => {
       if (!!data) {
         console.log("Data final response", data)
         var myWindow = window.open(data.url, "_self");

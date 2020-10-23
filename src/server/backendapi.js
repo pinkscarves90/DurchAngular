@@ -93,7 +93,7 @@ var BackendApi = /** @class */ (function () {
                         return [4 /*yield*/, axios(config)];
                     case 1:
                         response = _a.sent();
-                        res.send(JSON.stringify(response.data));
+                        res.send(JSON.parse(JSON.stringify(response.data)));
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
