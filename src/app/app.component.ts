@@ -28,6 +28,10 @@ export class AppComponent implements OnInit {
     //   .show();
   }
   ngOnInit() {
+  
+
+  }
+  buyNow(){
     console.log("Calling Wyre Reserve API on 3000  ")
     const accountId = 'AC_28ZMELGWTUR'
     return this.httpClient.post('http://localhost:3000/api/reserve', {
@@ -37,9 +41,7 @@ export class AppComponent implements OnInit {
     }).subscribe(data => {
       if (!!data) {
         console.log("Data final response", data)
-        var myWindow = window.open(data.url, "_self");
       }
     });
-
   }
 }

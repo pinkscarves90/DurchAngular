@@ -1,43 +1,75 @@
-<html>
-
+<html lang="en">
 <head>
-	<title>Wyre widget</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
 <body>
-	<button id='buy'>Buy</button>
-    {{reservation}}
-	<div id="wyre-dropin-widget-container"></div>
+    <div id="site_wrap">
+    <div class="header"> 
+        <img src="images/durch-logo.png" class="logo" alt="logo">
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-	</script>
-	<script src="https://verify.sendwyre.com/js/verify-module-init-beta.js"></script>
-	<script type="text/javascript">
-		(function($) {
-          
-            // debit card popup
-            var widget = new Wyre({
-                env: 'test',
-                reservation: {{reservation}},
- /*A reservation id is mandatory. In order for the widget to open properly you must use a new, unexpired reservation id. Reservation ids are only valid for 1 hour. A new reservation must also be made if a transaction fails.*/
-                operation: {
-                    type: 'debitcard-hosted-dialog'
-                }
-            });
+        <ul class="nav">
+            <li><a class="active" href="#">Buy</a></li>
+            <li><a href="#">Sell</a></li>
+            <li><a href="#">Swap</a></li>
+        </ul>
+        <ul class="nav1">
+            <li><a href="#">Home</a></li>
+        </ul>
+    </div>
+    <div class="featured_content">
+        <h1>Buy Crypto with Credit Debit Card</h1>
+        <p>Crypto purchase made fast, simple and easy</p>
+    </div>
+    <div class="buy_widget">
+        
+        <div class="container">
+            <form action="" method="POST" class="form">
 
-            widget.on("paymentSuccess", function (e) {
-                console.log("paymentSuccess", e );
-            });
+                <div class="form-group">
+                    <label for="fiat" class="form-label">You Pay</label>
+                    <input type="number" class="form-control" id="Buy" name="fiat" 
+                    placeholder="Enter Amount" tabindex="1" required>
+                    <select>
+                        <option value="currency">USD</option>
+                    </select>
+                </div>
 
-            $('#buy').click(function(){
-                widget.open();
+                <div class="form-group">
+                    <label for="crypto" class="form-label">You Receive</label>
+                    <input type="number" class="form-control" id="Buy" name="crypto" 
+                    placeholder="0.01242" tabindex="2" required>
+                    <select>
+                        <option value="currency">BTC</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="btn" (click)="buyNow()">Buy Now</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+        </div>
+    <script>
+        const select = document.querySelectorAll('select');
+        const input = document.querySelectorAll('input');
+        const API_URL ="https://api.sendwyre.com/v3/rates";
+        let html='';
+
+        async function currency(){
+            const res = await fetch(API_URL);
+            const data = await res.json();
+            console.log(data.rates)
+            const arrKeys = Object.keys(data.rates);
+            console.log(arrKeys)
+            arrKeys.map(item =>{
+                return html += `<option value=${item}>${item}</option>`;
             })
-
-        })(jQuery);
-
-
-	</script>
+        };
+        currency();
+    </script>
 </body>
-
 </html>
