@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private appService: AppService, private httpClient: HttpClient) {
+    this.buyNow();
     // new RampInstantSDK({
     //   hostAppName: "Durch.net",
     //   // URL to your app's logo
@@ -36,8 +37,7 @@ export class AppComponent implements OnInit {
     const accountId = 'AC_28ZMELGWTUR'
     return this.httpClient.post('http://localhost:3000/api/reserve', {
       referrerAccountId: accountId,
-      amount: '10',
-      sourceCurrency: "EUR",
+      sourceCurrency: "USD",
     }).subscribe(response => {
       if (!!response) {
         console.log("Data final response", response)
