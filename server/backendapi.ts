@@ -50,8 +50,8 @@ export class BackendApi {
                 headers: headers,
                 data: details
             }
-            console.log("CONFIG", config);
             const response = await axios(config)
+            console.log(response.data)
                     res.send(JSON.parse(JSON.stringify(response.data)))
   
         } catch (error) {
