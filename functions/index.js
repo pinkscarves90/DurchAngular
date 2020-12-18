@@ -5,7 +5,14 @@ const express = require("express");
 const port=3000
 const app = express()
 const axios = require('axios');
-
+app.use(cors(), function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://durch-834c0.web.app"); // update to match the domain you will make the request from
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
 
 app.post('/api/reserve',(req,res,next)=>{
     const timestamp = new Date().getTime();
