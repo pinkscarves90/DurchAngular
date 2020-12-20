@@ -48,12 +48,13 @@ package .json -> Firebase deploy requires all the dependencies to be listed unde
 npm install -g firebase-tools
 (Proj name:fir-express-demowyre)
 
-firebase logout
+* firebase logout
+* firebase login (login via web and it shows successfull in the cli) anila@durch.net
+* firebase use --add (select the project from your Gmail account)
+* firebase deploy (deploys to the public url) https://durch-834c0.web.app/
+to test node server > from functions folder Run command "node index" (It will start at that port)
 
-firebase login
-
-firebase use --add (select the project from your Gmail account)
-firebase deploy :
+(After your client side changes always build your app with ng build to create new dist folder)
 
 Your project fir-express-demowyre must be on the Blaze (pay-as-you-go) plan to complete this command. Required API cloudbuild.googleapis.com can't be enabled until the upgrade is complete. To upgrade, visit the following 
 URL:https://console.firebase.google.com/project/fir-express-demowyre/usage/details
