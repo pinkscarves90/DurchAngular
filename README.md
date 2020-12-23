@@ -4,9 +4,11 @@ Start client
 npm start (4200)
 
 Start Node
-tsc server.ts (if node side changes made)
-nodemon server.js
-node server.js (3000)
+tsc index.ts (if node side changes made)
+nodemon index.js
+From functions folder for firebase and server folder for locally running,
+
+node index.js (3000)
 
 
 For Firebase hosting from local 

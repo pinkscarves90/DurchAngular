@@ -34,16 +34,16 @@ export class BackendApi {
     async ordersReserveID(req, res, next) {
         try {
             const timestamp = new Date().getTime();
-            const url = `https://api.testwyre.com/v3/orders/reserve?timestamp=${timestamp}`;
+            const url = `https://api.sendwyre.com/v3/orders/reserve?timestamp=${timestamp}`;
             const headers = {};
             const body = {
                 referrerAccountId: req.body.referrerAccountId, //"AC_28ZMELGWTUR"
-                amount: req.body.amount, //"10"
-                sourceCurrency: req.body.sourceCurrency, //"EUR"
+                amount: req.body.amount, //""
+                sourceCurrency: req.body.sourceCurrency, //"USD"
             }
             const details = JSON.stringify(body);
             headers['Content-Type'] = 'application/json';
-            headers['Authorization'] = 'Bearer ' + 'SK-VM7DLZA2-U9TR7XD9-BA4U3C44-AFDHP2LJ' //SK
+            headers['Authorization'] = 'Bearer ' + 'SK-CPFX4MWD-VU96QGLR-H7ECC2GV-WQ9RPNW2' //SK
             const config = {
                 method: "POST",
                 url: url,
