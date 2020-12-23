@@ -41,6 +41,12 @@
     top: 15px;
     right: 15px;
   }
+  .header .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+  }
   
   .header .nav {
     list-style: none;

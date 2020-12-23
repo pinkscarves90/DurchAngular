@@ -34,8 +34,10 @@ export class AppComponent implements OnInit {
   }
   buyNow(){
     console.log("Calling Wyre Reserve API on 3000  ")
-    const accountId = 'AC_28ZMELGWTUR'
+    //const accountId = 'AC_28ZMELGWTUR' //Test
+    const accountId = 'AC_2AZEYWPZZJ3' //Live
     return this.httpClient.post('https://us-central1-durch-834c0.cloudfunctions.net/expressApp/api/reserve', {
+     // return this.httpClient.post('http://localhost:3000/api/reserve', {
       referrerAccountId: accountId,
       sourceCurrency: "USD",
     }).subscribe(response => {

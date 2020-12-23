@@ -73,7 +73,7 @@ var BackendApi = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         timestamp = new Date().getTime();
-                        url = "https://api.testwyre.com/v3/orders/reserve?timestamp=" + timestamp;
+                        url = "https://api.sendwyre.com/v3/orders/reserve?timestamp=" + timestamp;
                         headers = {};
                         body = {
                             referrerAccountId: req.body.referrerAccountId,
@@ -82,13 +82,14 @@ var BackendApi = /** @class */ (function () {
                         };
                         details = JSON.stringify(body);
                         headers['Content-Type'] = 'application/json';
-                        headers['Authorization'] = 'Bearer ' + 'SK-VM7DLZA2-U9TR7XD9-BA4U3C44-AFDHP2LJ'; //SK
+                        headers['Authorization'] = 'Bearer ' + 'SK-CPFX4MWD-VU96QGLR-H7ECC2GV-WQ9RPNW2'; //SK
                         config = {
                             method: "POST",
                             url: url,
                             headers: headers,
                             data: details
                         };
+                        console.log(config);
                         return [4 /*yield*/, axios(config)];
                     case 1:
                         response = _a.sent();

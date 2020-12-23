@@ -1,6 +1,6 @@
 {
     "/api*": {
-      "target":"https://us-central1-durch-834c0.cloudfunctions.net/expressApp",
+      "target":"http://localhost:3000",
       "secure":false,
       "logLevel":"debug"
     }
